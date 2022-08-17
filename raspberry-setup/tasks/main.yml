@@ -1,0 +1,39 @@
+---
+# task file raspberry-setup
+
+- name: OS | Perform update
+  apt:
+    upgrade: safe
+    update_cache: yes
+  register: update_result
+
+- name: RASPBERRY PI SETUP | Install basic packages
+  package: name={{ item }} state=present
+  with_items:
+    - "{{ packages }}"
+
+- name: RASPBERRY PI SETUP | Enable SSH
+  systemd:
+    name: sshd
+    state: started
+    enabled: yes
+  when: ssh
+
+- import_tasks: setup_zsh.yml
+  when: zsh
+  become: false
+  tags: zsh
+
+- import_tasks: setup_staticip.yml
+  when: set_staticip
+  become: true
+  tags: configure_ip
+
+- import_tasks: setup_virtualenv.yml
+  when: virtualenv
+  become: false
+  tags: virtualenv
+
+- import_tasks: setup_log2ram.yml
+  when: log2ram
+  tags: log2ram

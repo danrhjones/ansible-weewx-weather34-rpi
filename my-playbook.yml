@@ -1,0 +1,10 @@
+---
+- hosts: weewx.local
+  become: yes
+  remote_user: pi
+  roles:
+    # - raspberry-setup
+    # - rtl-sdr-setup
+    # - weewx-setup
+    # - weather34-setup
+    - nginx-setup

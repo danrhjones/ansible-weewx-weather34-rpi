@@ -1,0 +1,6 @@
+packages:
+  - libtool
+  - libusb-dev
+  - librtlsdr*
+  - rtl-sdr
+  - cmake

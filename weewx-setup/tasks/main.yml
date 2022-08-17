@@ -1,0 +1,39 @@
+---
+
+- name: OS | Perform update
+  apt:
+    upgrade: safe
+    update_cache: yes
+  register: update_result
+
+- name: Install RTL dependencies
+  package: name={{ item }} state=present
+  with_items:
+    - "{{ packages }}"
+
+- name: Add Weewx trust
+  shell: "wget -qO - https://weewx.com/keys.html | sudo gpg --dearmor --output /etc/apt/trusted.gpg.d/weewx.gpg"
+
+- name: Add Weewx repo to apt
+  shell: "wget -qO - https://weewx.com/apt/weewx-python3.list | sudo tee /etc/apt/sources.list.d/weewx.list"
+
+- name: Download Weewx
+  become: true
+  apt:
+    name: weewx
+    update_cache: yes
+
+- name: download weewx sdr driver
+  command: wget -O weewx-sdr.zip https://github.com/matthewwall/weewx-sdr/archive/master.zip
+
+- name: install weewx sdr driver
+  command: /usr/bin/wee_extension --install /home/pi/weewx-sdr.zip
+
+# TODO
+# - name: create/overwrite config file from template
+#   template:
+#     src: weewx.conf.j2
+#     dest: /etc/weewx/weewx.conf
+#     owner: root
+#     group: root
+#     mode: 0664

@@ -1,0 +1,30 @@
+---
+
+- name: OS | Perform update
+  apt:
+    upgrade: safe
+    update_cache: yes
+  register: update_result
+
+- name: Install RTL dependencies
+  package: name={{ item }} state=present
+  with_items:
+    - "{{ packages }}"
+
+- name: Clone rtl_433 library
+  git:
+    repo: https://github.com/merbanan/rtl_433.git
+    dest: /root/rtl_433
+
+- name: Create rtl build dir
+  file:
+    path: /root/rtl_433/build
+    state: directory
+    ## mode: 0755
+
+- name: build rtl_433
+  command: "{{ item }} chdir=/root/rtl_433/build"
+  with_items:
+    - cmake ../
+    - make
+    - make install

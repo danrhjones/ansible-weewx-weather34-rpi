@@ -1,0 +1,27 @@
+---
+- name: OH-MY-ZSH | Download oh-my-zsh
+  get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: "/home/{{ user }}/"
+    mode: 0755
+
+- name: OH-MY-ZSH | Install oh-my-zsh
+  expect:
+    command: "/home/{{ user }}/install.sh"
+    responses:
+      'change your default shell to zsh': 'Y'
+  ignore_errors: true
+  register: zsh_output
+  failed_when: "'Change your default shell manually' not in zsh_output.stdout"
+
+- name: BASH | Change .bashrc to load zsh
+  blockinfile:
+    dest: "/home/{{ user }}/.bashrc"
+    insertafter: "^# for examples"
+    marker: "#{mark} RASPBERRY SETUP : ANSIBLE MANAGED BLOCK"
+    state: present
+    backup: yes
+    block: |
+      if test -t 1; then
+        exec zsh
+      fi

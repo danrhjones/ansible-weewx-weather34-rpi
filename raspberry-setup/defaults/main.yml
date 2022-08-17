@@ -1,0 +1,32 @@
+packages:
+  - vim
+  - zsh
+  - git
+  - htop
+  - meld
+  - wget
+  - rsync
+  - sqlite3
+  - tcpdump
+  
+
+
+# vars related to the user
+user: pi
+zsh: true
+# vars related to static ip
+set_staticip: true
+static_ip: 192.168.86.19
+router_ip: 192.168.86.1
+# virtualenv related vars
+virtualenv: true
+virtualenvs_dir: .virtualenvs
+virtualenvs_path: export WORKON_HOME=$HOME/{{ virtualenvs_dir }}
+virtualenvwrapper_path: source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+
+# log2ram variables
+log2ram: false
+size: 200M
+
+# enable ssh
+ssh: true

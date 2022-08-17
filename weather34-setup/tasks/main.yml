@@ -1,0 +1,42 @@
+---
+- name: Add php repo to apt
+  shell: "curl https://packages.sury.org/php/apt.gpg | sudo tee /usr/share/keyrings/suryphp-archive-keyring.gpg >/dev/null"
+
+- name: Add php repo to apt
+  shell: 'echo "deb [signed-by=/usr/share/keyrings/suryphp-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/sury-php.list'
+
+- name: Update APT package manager repositories cache
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install PHP and dependencies
+  package: name={{ item }} state=present
+  with_items:
+    - "{{ packages }}"
+
+- name: Install python dependencies 
+  pip:
+    name: xmltodict
+
+- name: copy services.txt
+  template:
+    src: services.txt.j2
+    dest: /home/pi/services.txt
+    owner: root
+    group: root
+    mode: 0664
+
+- name: Clone weather34
+  git: 
+    repo: https://github.com/steepleian/weewx-Weather34.git
+    dest: /home/pi/weewx-Weather34
+
+- name: change directory
+  shell: cd weewx-Weather34 
+
+- name: Run weather 34 installer 
+  expect:
+    command: "sudo python /home/pi/weewx-Weather34/w34_installer.py"
+    responses:
+      '!!! THIS INSTALL IS USING PYTHON VERSION 3.9.2 IS THIS CORRECT? (Yes/No)': 'yes'
