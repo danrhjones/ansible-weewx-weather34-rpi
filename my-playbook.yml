@@ -1,6 +1,6 @@
 ---
 - hosts: weewx.local
-  become: yes
+  become: true
   remote_user: pi
   roles:
     # - raspberry-setup

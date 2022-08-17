@@ -1,3 +1,4 @@
+---
 packages:
   - vim
   - zsh
@@ -8,8 +9,6 @@ packages:
   - rsync
   - sqlite3
   - tcpdump
-  
-
 
 # vars related to the user
 user: pi

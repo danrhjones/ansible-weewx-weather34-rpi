@@ -1,6 +1,6 @@
 ---
 
-# setup log2ram 
+# setup log2ram
 
 - name: LOG2RAM | Download repo
   git:
@@ -23,7 +23,7 @@
     regexp: '^SIZE'
     line: "SIZE={{ size }}"
     state: present
-    backup: yes
+    backup: true
 
 - name: LOG2RAM | Remove repo
   file:

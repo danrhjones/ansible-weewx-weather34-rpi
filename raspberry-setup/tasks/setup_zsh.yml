@@ -20,7 +20,7 @@
     insertafter: "^# for examples"
     marker: "#{mark} RASPBERRY SETUP : ANSIBLE MANAGED BLOCK"
     state: present
-    backup: yes
+    backup: true
     block: |
       if test -t 1; then
         exec zsh

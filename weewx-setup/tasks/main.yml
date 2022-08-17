@@ -3,7 +3,7 @@
 - name: OS | Perform update
   apt:
     upgrade: safe
-    update_cache: yes
+    update_cache: true
   register: update_result
 
 - name: Install RTL dependencies
@@ -21,7 +21,7 @@
   become: true
   apt:
     name: weewx
-    update_cache: yes
+    update_cache: true
 
 - name: download weewx sdr driver
   command: wget -O weewx-sdr.zip https://github.com/matthewwall/weewx-sdr/archive/master.zip

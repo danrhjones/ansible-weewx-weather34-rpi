@@ -8,14 +8,14 @@
 - name: Update APT package manager repositories cache
   become: true
   apt:
-    update_cache: yes
+    update_cache: true
 
 - name: Install PHP and dependencies
   package: name={{ item }} state=present
   with_items:
     - "{{ packages }}"
 
-- name: Install python dependencies 
+- name: Install python dependencies
   pip:
     name: xmltodict
 
@@ -28,15 +28,16 @@
     mode: 0664
 
 - name: Clone weather34
-  git: 
+  git:
     repo: https://github.com/steepleian/weewx-Weather34.git
     dest: /home/pi/weewx-Weather34
 
 - name: change directory
-  shell: cd weewx-Weather34 
+  shell: cd weewx-Weather34
 
-- name: Run weather 34 installer 
-  expect:
-    command: "sudo python /home/pi/weewx-Weather34/w34_installer.py"
-    responses:
-      '!!! THIS INSTALL IS USING PYTHON VERSION 3.9.2 IS THIS CORRECT? (Yes/No)': 'yes'
+# TODO get installer to work
+# - name: Run weather 34 installer
+#   expect:
+#     command: "sudo python /home/pi/weewx-Weather34/w34_installer.py"
+#     responses:
+#       '!!! THIS INSTALL IS USING PYTHON VERSION 3.9.2 IS THIS CORRECT? (Yes/No)': 'yes'
