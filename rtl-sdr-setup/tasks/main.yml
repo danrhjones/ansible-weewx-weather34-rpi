@@ -28,3 +28,14 @@
     - cmake ../
     - make
     - make install
+
+- name: blacklist device
+  copy:
+    dest: "/etc/modprobe.d/blacklist-rtl.conf"
+    content: blacklist dvb_usb_rtl28xxu
+
+- name: reload rules
+  command: sudo udevadm control --reload-rules 
+
+- name: trigger udevadm
+  command: sudo udevadm trigger
